@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fetchr: free video and music downloader for Android and iPhone | by Muhammad Saad</title>
+  <meta name="description" content="Fetchr is a free, ad-free video and music downloader for Android and iPhone by Muhammad Saad. Paste a link from YouTube, Instagram, TikTok, Facebook, X, SoundCloud and 1000+ more sites and save it to your phone." />
+  <meta name="keywords" content="Fetchr, video downloader, music downloader, YouTube downloader, Instagram downloader, TikTok downloader, Fetchr APK, Fetchr IPA, Muhammad Saad, filesofsaad" />
+  <meta name="author" content="Muhammad Saad" />
+  <link rel="canonical" href="https://craftedbysaad.github.io/fetchr-app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Fetchr: paste a link, save it to your phone" />
+  <meta property="og:description" content="Videos and music from YouTube, Instagram, TikTok and 1000+ more sites. Free, no ads. For Android and iPhone. By Muhammad Saad." />
+  <meta property="og:url" content="https://craftedbysaad.github.io/fetchr-app/" />
+  <meta property="og:image" content="https://craftedbysaad.github.io/fetchr-app/assets/icon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="theme-color" content="#0A111D" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Fetchr",
+    "operatingSystem": "Android, iOS",
+    "applicationCategory": "MultimediaApplication",
+    "softwareVersion": "1.0.0",
+    "description": "A free, ad-free downloader for videos and music from YouTube, Instagram, TikTok and 1000+ more sites.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Muhammad Saad", "url": "https://instagram.com/filesofsaad" },
+    "downloadUrl": "https://github.com/craftedbysaad/fetchr-app/releases/latest",
+    "image": "https://craftedbysaad.github.io/fetchr-app/assets/icon.png"
+  }
+  </script>
+  <style>
+    :root {
+      --ground: #0a111d;
+      --surface: #111b2b;
+      --ink: #eef3fb;
+      --muted: #aab6c9;
+      --faint: #8592a8;
+      --accent: #4f86ff;
+      --aqua: #19c8da;
+      --deep: #2f5cf0;
+      --glass: rgba(255, 255, 255, 0.06);
+      --line: rgba(255, 255, 255, 0.11);
+      --spring: cubic-bezier(.34, 1.56, .64, 1);
+      --smooth: cubic-bezier(.22, 1, .36, 1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body {
+      background: var(--ground);
+      color: var(--ink);
+      font-family: "Figtree", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, .brand, .stat b { font-family: "Bricolage Grotesque", "Figtree", system-ui, sans-serif; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    .wrap { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+    /* Ambient light, like the app's background */
+    .glow { position: fixed; border-radius: 50%; filter: blur(40px); pointer-events: none; z-index: 0; }
+    .glow.a { width: 70vmax; height: 70vmax; left: -24vmax; top: -30vmax; background: radial-gradient(circle, rgba(25,200,218,.22), rgba(25,200,218,.06) 50%, transparent 70%); }
+    .glow.b { width: 62vmax; height: 62vmax; right: -22vmax; bottom: -30vmax; background: radial-gradient(circle, rgba(79,134,255,.24), rgba(47,92,240,.07) 50%, transparent 70%); }
+
+    /* Top bar */
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(10, 17, 29, .62);
+      backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav .wrap { display: flex; align-items: center; gap: 24px; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 21px; letter-spacing: -.02em; text-decoration: none; }
+    .brand img { width: 30px; height: 30px; }
+    .nav nav { display: flex; gap: 22px; margin-left: auto; }
+    .nav nav a { text-decoration: none; color: var(--muted); font-weight: 600; font-size: 15px; transition: color .2s; }
+    .nav nav a:hover { color: var(--ink); }
+    .nav .cta { padding: 9px 16px; font-size: 14px; min-height: 40px; }
+    @media (max-width: 760px) { .nav nav { display: none; } .nav .cta { margin-left: auto; } }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 15px 24px; border-radius: 999px; font-weight: 700; font-size: 16px;
+      text-decoration: none; transition: transform .35s var(--spring), box-shadow .25s ease, background .25s;
+      min-height: 48px;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: scale(.96); }
+    .btn.primary { background: var(--accent); color: #fff; box-shadow: 0 12px 32px rgba(79,134,255,.35); }
+    .btn.primary:hover { box-shadow: 0 16px 40px rgba(79,134,255,.5); }
+    .btn.ghost { background: var(--glass); color: var(--ink); border: 1px solid var(--line); }
+    .btn.ghost:hover { background: rgba(255,255,255,.1); }
+    .btn svg { width: 20px; height: 20px; flex: none; }
+
+    /* Hero */
+    .hero { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 40px; padding: 72px 0 40px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+      font-size: 13px; font-weight: 700; color: var(--ink);
+      padding: 6px 12px 6px 6px; border-radius: 999px; background: var(--glass); border: 1px solid var(--line);
+    }
+    .pill b { background: var(--accent); color: #fff; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; letter-spacing: .04em; }
+    .hero h1 { font-size: clamp(44px, 7vw, 80px); line-height: 1; font-weight: 800; letter-spacing: -.04em; margin: 22px 0 18px; }
+    .hero h1 .grad { background: linear-gradient(95deg, var(--aqua), var(--accent) 60%, var(--deep)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero .lede { font-size: clamp(17px, 2.2vw, 20px); color: var(--muted); max-width: 520px; }
+    .buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .note { color: var(--faint); font-size: 14px; margin-top: 16px; }
+
+    .sites { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .sites span { font-size: 13.5px; font-weight: 600; color: var(--muted); padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--glass); }
+
+    .stage { position: relative; height: 600px; }
+    .phone {
+      position: absolute; width: 250px; border-radius: 40px; padding: 9px;
+      background: linear-gradient(160deg, #22304a, #0d1524);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 40px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12);
+      transition: transform .8s var(--smooth);
+    }
+    .phone img { border-radius: 32px; width: 100%; }
+    .phone.back { left: 6%; top: 50px; transform: rotate(-8deg); opacity: .92; }
+    .phone.front { right: 4%; top: 0; transform: rotate(5deg); }
+    .stage:hover .phone.back { transform: rotate(-10deg) translateX(-10px); }
+    .stage:hover .phone.front { transform: rotate(3deg) translateY(-8px); }
+    .stage .halo { position: absolute; inset: 10% 5%; border-radius: 50%; background: radial-gradient(circle, rgba(25,200,218,.28), rgba(79,134,255,.18) 45%, transparent 68%); filter: blur(30px); }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; text-align: center; padding-top: 48px; }
+      .hero .lede { margin: 0 auto; }
+      .buttons, .sites { justify-content: center; }
+      .stage { height: 470px; max-width: 420px; margin: 0 auto; width: 100%; }
+      .phone { width: 200px; border-radius: 34px; }
+      .phone img { border-radius: 27px; }
+    }
+    @media (max-width: 420px) { .phone { width: 170px; } .stage { height: 400px; } }
+
+    /* Stats */
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 30px 0 10px; }
+    .stat { background: var(--glass); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; }
+    .stat b { display: block; font-size: 30px; font-weight: 800; letter-spacing: -.03em; }
+    .stat span { color: var(--muted); font-size: 14px; }
+    @media (max-width: 700px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+    /* Sections */
+    section { padding: 72px 0 24px; }
+    .kicker { font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--aqua); }
+    h2 { font-size: clamp(30px, 4.6vw, 46px); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; margin: 10px 0 14px; }
+    .sub { color: var(--muted); font-size: 18px; max-width: 640px; }
+
+    /* How it works */
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 30px; }
+    .steps figure { margin: 0; }
+    .steps img { border-radius: 26px; border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+    .steps figcaption { margin-top: 14px; text-align: left; }
+    .steps figcaption b { display: flex; align-items: center; gap: 10px; color: var(--ink); font-size: 17px; font-weight: 700; }
+    .steps figcaption b i { font-style: normal; flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; background: var(--accent); color: #fff; }
+    .steps figcaption span { display: block; color: var(--muted); font-size: 15px; margin-top: 4px; padding-left: 36px; }
+    @media (max-width: 760px) { .steps { grid-template-columns: 1fr; max-width: 340px; margin-left: auto; margin-right: auto; } }
+
+    /* Gallery */
+    .gallery { position: relative; margin-top: 26px; }
+    .gallery::after { content: ''; position: absolute; right: 0; top: 0; bottom: 14px; width: 60px; background: linear-gradient(90deg, transparent, var(--ground)); pointer-events: none; }
+    .shots { display: flex; gap: 16px; overflow-x: auto; padding: 4px 2px 18px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.2) transparent; }
+    .shots figure { flex: 0 0 auto; width: 220px; scroll-snap-align: start; margin: 0; }
+    .shots img { border-radius: 26px; border: 1px solid var(--line); box-shadow: 0 16px 40px rgba(0,0,0,.45); transition: transform .45s var(--spring); }
+    .shots figure:hover img { transform: translateY(-6px); }
+    figcaption { color: var(--faint); font-size: 13.5px; text-align: center; margin-top: 10px; }
+
+    /* Features */
+    .features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 26px; }
+    .card { background: var(--glass); border: 1px solid var(--line); border-radius: 22px; padding: 22px; transition: transform .45s var(--spring), background .3s; }
+    .card:hover { transform: translateY(-4px); background: rgba(255,255,255,.085); }
+    .ico { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: linear-gradient(140deg, rgba(25,200,218,.22), rgba(79,134,255,.24)); border: 1px solid var(--line); }
+    .ico svg { width: 22px; height: 22px; color: var(--ink); }
+    .card h3 { font-size: 18px; font-weight: 800; margin: 14px 0 4px; letter-spacing: -.01em; }
+    .card p { color: var(--muted); font-size: 15px; }
+    @media (max-width: 900px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
+
+    /* Install */
+    .install { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 26px; }
+    .install h3 { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; }
+    .install h3 svg { width: 22px; height: 22px; }
+    .install ol { list-style: none; counter-reset: s; margin-top: 14px; display: grid; gap: 10px; }
+    .install li { counter-increment: s; display: flex; gap: 12px; color: var(--muted); }
+    .install li::before { content: counter(s); flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; color: var(--ink); background: rgba(255,255,255,.1); }
+    .install b { color: var(--ink); }
+    .install a { color: var(--accent); }
+    @media (max-width: 700px) { .install { grid-template-columns: 1fr; } }
+
+    /* About */
+    .about { display: flex; gap: 26px; align-items: center; background: var(--glass); border: 1px solid var(--line); border-radius: 28px; padding: 28px; margin-top: 26px; }
+    .avatar { flex: none; width: 112px; height: 112px; border-radius: 50%; padding: 3px; background: linear-gradient(140deg, var(--aqua), var(--accent), var(--deep)); box-shadow: 0 14px 40px rgba(79,134,255,.3); }
+    .avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--ground); }
+    .about h3 { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
+    .about .role { color: var(--aqua); font-weight: 700; font-size: 14.5px; margin: 2px 0 10px; }
+    .about p { color: var(--muted); font-size: 16.5px; max-width: 720px; }
+    .about .btn { margin-top: 16px; padding: 11px 18px; font-size: 15px; }
+    @media (max-width: 640px) { .about { flex-direction: column; text-align: center; } .avatar { width: 96px; height: 96px; } }
+
+    footer { text-align: center; color: var(--faint); font-size: 13.5px; padding: 44px 0 56px; border-top: 1px solid var(--line); margin-top: 72px; }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--smooth), transform .8s var(--smooth); }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .phone, .btn, .card, .shots img { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow a"></div>
+  <div class="glow b"></div>
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="#top"><img src="assets/icon.png" alt="" width="30" height="30" />fetchr</a>
+      <nav aria-label="Sections">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#install">Install</a>
+        <a href="#about">About</a>
+      </nav>
+      <a class="btn primary cta" href="https://github.com/craftedbysaad/fetchr-app/releases/latest">Download</a>
+    </div>
+  </header>
+
+  <main class="wrap" id="top">
+    <section class="hero" style="padding-top: 72px">
+      <div>
+        <a class="pill" href="#how"><b>NEW</b> Fetchr 1.0.0 · first release</a>
+        <h1>Paste a link.<br /><span class="grad">Save it to your phone.</span></h1>
+        <p class="lede">A free downloader for Android and iPhone. Videos and music from YouTube, Instagram, TikTok and 1000+ more sites, in the quality you pick. No ads.</p>
+        <div class="buttons">
+          <a class="btn primary" href="https://github.com/craftedbysaad/fetchr-app/releases/latest">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 9.48l1.84-3.18a.38.38 0 00-.66-.38l-1.86 3.23a11.5 11.5 0 00-9.84 0L5.22 5.92a.38.38 0 00-.66.38L6.4 9.48A10.8 10.8 0 001 18h22a10.8 10.8 0 00-5.4-8.52zM7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg>
+            Download for Android
+          </a>
+          <a class="btn ghost" href="https://github.com/craftedbysaad/fetchr-app/releases/latest">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.17 1.77-3.21 1.85-3.26-1.01-1.47-2.58-1.67-3.13-1.7-1.33-.13-2.6.79-3.28.79-.68 0-1.72-.77-2.83-.75-1.45.02-2.8.85-3.55 2.15-1.52 2.63-.39 6.52 1.09 8.66.72 1.04 1.58 2.21 2.71 2.17 1.09-.04 1.5-.7 2.82-.7 1.31 0 1.69.7 2.84.68 1.17-.02 1.91-1.06 2.63-2.11.83-1.21 1.17-2.38 1.19-2.44-.03-.01-2.28-.87-2.34-3.49zM14.23 6.24c.6-.73 1-1.74.89-2.74-.86.03-1.9.57-2.52 1.3-.55.64-1.04 1.67-.91 2.65.96.07 1.94-.49 2.54-1.21z"/></svg>
+            Download for iPhone
+          </a>
+        </div>
+        <div class="sites" aria-label="Works with">
+          <span>YouTube</span><span>Instagram</span><span>TikTok</span><span>Facebook</span><span>X</span><span>SoundCloud</span><span>+1000 more</span>
+        </div>
+      </div>
+      <div class="stage" aria-hidden="true">
+        <div class="halo"></div>
+        <div class="phone back"><img src="screenshots/02-home.jpg" alt="" /></div>
+        <div class="phone front"><img src="screenshots/03-choose-quality.jpg" alt="" /></div>
+      </div>
+    </section>
+
+    <div class="stats reveal">
+      <div class="stat"><b>1000+</b><span>sites supported</span></div>
+      <div class="stat"><b>4K</b><span>best video quality</span></div>
+      <div class="stat"><b>3</b><span>downloads at once</span></div>
+      <div class="stat"><b>0</b><span>ads or sign-ups</span></div>
+    </div>
+
+    <section id="how">
+      <div class="reveal">
+        <span class="kicker">How it works</span>
+        <h2>Three taps, one file</h2>
+        <p class="sub">Copy a link in any app, open Fetchr and it's ready to save.</p>
+      </div>
+      <div class="steps reveal">
+        <figure>
+          <img src="screenshots/02-home.jpg" alt="Fetchr home: paste a link from any site" loading="lazy" />
+          <figcaption><b><i>1</i>Paste a link</b><span>Or share it to Fetchr straight from YouTube, Instagram or TikTok.</span></figcaption>
+        </figure>
+        <figure>
+          <img src="screenshots/03-choose-quality.jpg" alt="Choose Best, Medium, Small or WhatsApp status, with real file sizes" loading="lazy" />
+          <figcaption><b><i>2</i>Pick the quality</b><span>Best, Medium, Small or WhatsApp status, with the real file size. Or Audio only.</span></figcaption>
+        </figure>
+        <figure>
+          <img src="screenshots/04-downloading.jpg" alt="A download in progress with speed and time left" loading="lazy" />
+          <figcaption><b><i>3</i>It saves to your phone</b><span>Watch the speed and time left. Pause, resume or retry any time.</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="look">
+      <div class="reveal">
+        <span class="kicker">A look inside</span>
+        <h2>Clean, calm, made of glass</h2>
+        <p class="sub">A frosted glass design in Dark or Light, with nothing in the way of your files.</p>
+      </div>
+      <div class="gallery reveal">
+        <div class="shots">
+          <figure><img src="screenshots/01-launch.jpg" alt="Fetchr launch screen" loading="lazy" /><figcaption>Launch</figcaption></figure>
+          <figure><img src="screenshots/02-home.jpg" alt="Fetchr home screen" loading="lazy" /><figcaption>Home</figcaption></figure>
+          <figure><img src="screenshots/03-choose-quality.jpg" alt="Choosing the quality" loading="lazy" /><figcaption>Choose quality</figcaption></figure>
+          <figure><img src="screenshots/04-downloading.jpg" alt="Downloads" loading="lazy" /><figcaption>Downloads</figcaption></figure>
+          <figure><img src="screenshots/05-library.jpg" alt="Library" loading="lazy" /><figcaption>Library</figcaption></figure>
+          <figure><img src="screenshots/06-settings.jpg" alt="Settings" loading="lazy" /><figcaption>Settings</figcaption></figure>
+          <figure><img src="screenshots/07-about.jpg" alt="About Fetchr" loading="lazy" /><figcaption>About</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="reveal">
+        <span class="kicker">Features</span>
+        <h2>Everything a downloader should be</h2>
+      </div>
+      <div class="features">
+        <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div><h3>1000+ sites</h3><p>YouTube, Instagram, TikTok, Facebook, X, SoundCloud and many more.</p></div>
+        <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4-2.5z"/></svg></div><h3>Up to 4K</h3><p>Best, Medium, Small or WhatsApp status, each with its real file size.</p></div>
+        <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l11-2v12M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM20 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/></svg></div><h3>Music too</h3><p>Audio only as MP3 or M4A, with the original sound.</p></div>
+        <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg></div><h3>Fast downloads</h3><p>Up to 3 at once, with pause, resume and retry.</p></div>
+        <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><h3>Saved on your phone</h3><p>Android: Movies and Music › Fetchr. iPhone: Files › Fetchr, and Photos.</p></div>
+        <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></div><h3>Always up to date</h3><p>The download engine updates by itself, so sites keep working.</p></div>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="reveal">
+        <span class="kicker">Install</span>
+        <h2>Ready in a minute</h2>
+      </div>
+      <div class="install">
+        <div class="card reveal">
+          <h3><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 9.48l1.84-3.18a.38.38 0 00-.66-.38l-1.86 3.23a11.5 11.5 0 00-9.84 0L5.22 5.92a.38.38 0 00-.66.38L6.4 9.48A10.8 10.8 0 001 18h22a10.8 10.8 0 00-5.4-8.52zM7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg>Android</h3>
+          <ol>
+            <li><span>Download <b>Fetchr-…-arm64.apk</b> from the <a href="https://github.com/craftedbysaad/fetchr-app/releases/latest">latest release</a>. Use the <b>-arm.apk</b> only on older phones.</span></li>
+            <li><span>Open it and allow "Install unknown apps".</span></li>
+            <li><span>New versions install over the old one; your files stay.</span></li>
+          </ol>
+        </div>
+        <div class="card reveal">
+          <h3><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.17 1.77-3.21 1.85-3.26-1.01-1.47-2.58-1.67-3.13-1.7-1.33-.13-2.6.79-3.28.79-.68 0-1.72-.77-2.83-.75-1.45.02-2.8.85-3.55 2.15-1.52 2.63-.39 6.52 1.09 8.66.72 1.04 1.58 2.21 2.71 2.17 1.09-.04 1.5-.7 2.82-.7 1.31 0 1.69.7 2.84.68 1.17-.02 1.91-1.06 2.63-2.11.83-1.21 1.17-2.38 1.19-2.44-.03-.01-2.28-.87-2.34-3.49zM14.23 6.24c.6-.73 1-1.74.89-2.74-.86.03-1.9.57-2.52 1.3-.55.64-1.04 1.67-.91 2.65.96.07 1.94-.49 2.54-1.21z"/></svg>iPhone</h3>
+          <ol>
+            <li><span>On the iPhone, download <b>Fetchr-…-ipa.zip</b> from the <a href="https://github.com/craftedbysaad/fetchr-app/releases/latest">latest release</a>. Safari saves it to Files; tap it to unzip.</span></li>
+            <li><span>Share the <b>.ipa</b> to eSign, or install it with <a href="https://sideloadly.io">Sideloadly</a> from a computer.</span></li>
+            <li><span>Keep Fetchr open while a download runs.</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="reveal">
+        <span class="kicker">About</span>
+        <h2>Made by one designer</h2>
+      </div>
+      <div class="about reveal">
+        <div class="avatar"><img src="assets/saad.jpg" alt="Muhammad Saad" width="112" height="112" /></div>
+        <div>
+          <h3>Muhammad Saad</h3>
+          <div class="role">Designer &amp; creative technologist</div>
+          <p>Saad builds seamless digital experiences across UI/UX, web and mobile. Fetchr is his take on a downloader that just works: paste a link, get the file, no ads. He also made <a href="https://craftedbysaad.github.io/lyra-app/" style="color: var(--accent)">Lyra</a>, a free music app.</p>
+          <a class="btn ghost" href="https://instagram.com/filesofsaad">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
+            @filesofsaad
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Save only what you have the right to keep. Videos and music belong to their owners.<br />
+      Powered by yt-dlp, FFmpeg, aria2 and QuickJS. Fetchr is free software under the GPL-3.0 licence; its source code is attached to every release.<br />
+      Designed by Muhammad Saad · <a href="https://github.com/craftedbysaad/fetchr-app">GitHub</a>
+    </footer>
+  </main>
+
+  <script>
+    // Sections fade up as they come into view.
+    (function () {
+      var items = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) { items.forEach(function (el) { el.classList.add('in'); }); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      items.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</body>
+</html>
